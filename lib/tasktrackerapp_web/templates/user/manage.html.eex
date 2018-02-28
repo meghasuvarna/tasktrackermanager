@@ -1,0 +1,28 @@
+
+
+
+<h2>Manage Users</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Name</th>
+      <th>Id</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user <- @users do %>
+    <tr>
+      <td><%= user.email %></td>
+      <td><%= user.name %></td>
+      <td><%= user.id %></td>
+
+     
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

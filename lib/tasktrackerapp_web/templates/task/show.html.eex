@@ -1,0 +1,102 @@
+<h2>Show Task</h2>
+
+<ul>
+  
+  <li>
+    <strong>Assignee:</strong>
+    <%= @task.user.name %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @task.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @task.description %>
+  </li>
+
+  <%= if @task.completed == true do %>
+  <li>
+    <strong>Status:</strong>
+    Completed
+  </li>
+  <% else %>
+  <li>
+    <strong>Status:</strong>
+     Not completed
+  </li>  
+  <% end %>
+  
+  <%= if not is_nil(Tasktrackerapp.Block.list_block_by_id(@task.id)) do %>
+      <li>
+ <strong>Start Time:</strong>
+ <%= NaiveDateTime.truncate(Tasktrackerapp.Block.list_block_by_id(@task.id).starttime, :second) %>
+   
+
+ </li>
+ <li>
+  <strong>End Time:</strong>
+  <%= NaiveDateTime.truncate(Tasktrackerapp.Block.list_block_by_id(@task.id).endtime, :second) %> 
+  </li>
+      <% else %>
+      <li>
+ <strong>Start Time:</strong>
+  Not started 
+   
+
+ </li>
+ <li>
+  <strong>End Time:</strong>
+   Not started 
+  </li>
+      <% end %>  
+
+ 
+</ul>
+
+<%= if @current_user.name == @task.user.name do %>
+
+ <%# attribution https://tideee.com/blog/handling-date-inputs-in-elixir-s-phoenix-framework %>
+   <%= form_for @conn, timestamp_path(@conn, :create), fn f -> %>
+   <div class="form-group">
+      
+        <%= text_input f, :task_id, value: @task.id, hidden: true  %>
+        
+      </div>
+     <div class="form-group">
+    <%= label f, "Start time", class: "control-label" %>
+    <%= select f, :start_year, [options: 2018..2100] %> / 
+    <%= select f, :start_month, [options: 1..12] %> / 
+   <%= select f, :start_day, [options: 1..31] %> /
+   
+   <%= select f, :start_hour, [options: 0..23] %> 
+    <%= select f, :start_minute, [options: 0..59] %> 
+  
+ 
+</div>
+
+<div class="form-group">
+    <%= label f, "End time", class: "control-label" %>
+    
+    <%= select f, :end_year, [options: 2018..2100] %> / 
+    <%= select f, :end_month, [options: 1..12] %> / 
+   <%= select f, :end_day, [options: 1..31] %> /
+   
+   <%= select f, :end_hour, [options: 0..23] %> 
+    <%= select f, :end_minute, [options: 0..59] %> 
+   
+
+</div>
+
+  
+ <div class="form-group">
+    <%= submit "Update time spent", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
+
+<% end %>
+
+<span><%= link "Back", to: "/taskslist" %></span>

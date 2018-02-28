@@ -1,0 +1,61 @@
+<div class="row" style="float:right"><span><%= link "New Task", to: task_path(@conn, :new),  class: "btn btn-primary btn-xs" %></div>
+
+
+<h2>Your details</h2>
+
+<ul>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @current_user.email %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @current_user.name %>
+  </li>
+
+  <li>
+    <strong>Manager:</strong>
+  
+     <%= if is_nil(@current_user.manager_id) do %>
+      <td> Manager not assigned  </td> 
+      
+      <% else %>
+      <td> <%= @current_user.manager.name %> </td> 
+      <% end %>  
+
+  </li>
+
+</ul>
+
+<h1> Managees </h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Name</th>
+      
+      
+    
+    </tr>
+  </thead>
+<%= for user <- @users do %>
+<%= if not is_nil(user.manager_id) do %>
+
+<%= if @current_user.name == user.manager.name do %>
+
+  <tbody>
+
+    <tr>
+      <td><%= user.email %></td>
+      <td><%= user.name %></td>
+      
+   
+   
+    </tr>
+<% end %>
+<% end %>
+<% end %>
+
+
