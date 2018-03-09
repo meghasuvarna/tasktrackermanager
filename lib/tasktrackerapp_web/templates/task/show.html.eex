@@ -1,3 +1,10 @@
+<script>
+window.timestamp_path = "<%= timestamp_path(@conn, :create) %>"
+window.savetimer = "<%= user_path(@conn, :show, @current_user)%>";
+window.current_user_id = "<%= @current_user.id %>";
+</script>
+
+
 <h2>Show Task</h2>
 
 <ul>
@@ -28,75 +35,60 @@
      Not completed
   </li>  
   <% end %>
-  
-  <%= if not is_nil(Tasktrackerapp.Block.list_block_by_id(@task.id)) do %>
-      <li>
- <strong>Start Time:</strong>
- <%= NaiveDateTime.truncate(Tasktrackerapp.Block.list_block_by_id(@task.id).starttime, :second) %>
-   
+  </br>
 
- </li>
- <li>
-  <strong>End Time:</strong>
-  <%= NaiveDateTime.truncate(Tasktrackerapp.Block.list_block_by_id(@task.id).endtime, :second) %> 
-  </li>
-      <% else %>
-      <li>
- <strong>Start Time:</strong>
-  Not started 
-   
+  <%= if not is_nil(Tasktrackerapp.Block.list_blocks_by_id(@task.id)) do %>
+ <table class="table">
+  <thead>
+    <tr>
+      <th>Start Time</th>
+      <th>End Time</th>
+       <%= if @current_user.name == @task.user.name do %>
+      <th>Edit Time</th>
+      <th>Delete Block</th>
+        <% end %>
+      
+    
+    </tr>
+  </thead>
 
- </li>
- <li>
-  <strong>End Time:</strong>
-   Not started 
-  </li>
-      <% end %>  
 
- 
-</ul>
+<div>
+
 
 <%= if @current_user.name == @task.user.name do %>
+<div>
+<button class="start-button btn btn-secondary" data-task-id="<%= @task.id %>" 
+ data-flag="<%= 1 %>"> Start task </button>
+</div>
 
- <%# attribution https://tideee.com/blog/handling-date-inputs-in-elixir-s-phoenix-framework %>
-   <%= form_for @conn, timestamp_path(@conn, :create), fn f -> %>
-   <div class="form-group">
-      
-        <%= text_input f, :task_id, value: @task.id, hidden: true  %>
-        
-      </div>
-     <div class="form-group">
-    <%= label f, "Start time", class: "control-label" %>
-    <%= select f, :start_year, [options: 2018..2100] %> / 
-    <%= select f, :start_month, [options: 1..12] %> / 
-   <%= select f, :start_day, [options: 1..31] %> /
+</div>
+<% end %>  
+<%= for timeblock <- @task.tracker do %>
+
+
+  <tbody>
+
+    <tr>
+      <td><%= NaiveDateTime.truncate(timeblock.starttime, :second) %></td>
+      <td><%= NaiveDateTime.truncate(timeblock.endtime, :second) %> </td>
+      <%= if @current_user.name == @task.user.name do %>
+       <td>
+        <span><%= link "Edit", to: page_path(@conn, :edittimeblock, %{"timeblock_id"=>timeblock.id, "task_id"  => @task.id}), class: "btn btn-primary btn-xs" %></span>
+        </td>
+      <td> <span><%= link "Delete", to: timestamp_path(@conn, :delete, timeblock), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span></td>
+      <% end %>
+
    
-   <%= select f, :start_hour, [options: 0..23] %> 
-    <%= select f, :start_minute, [options: 0..59] %> 
-  
+   
+    </tr>
+    </tbody>
+<% end %>
+</table>
+
+
+    <% end %>  
+
  
-</div>
 
-<div class="form-group">
-    <%= label f, "End time", class: "control-label" %>
-    
-    <%= select f, :end_year, [options: 2018..2100] %> / 
-    <%= select f, :end_month, [options: 1..12] %> / 
-   <%= select f, :end_day, [options: 1..31] %> /
-   
-   <%= select f, :end_hour, [options: 0..23] %> 
-    <%= select f, :end_minute, [options: 0..59] %> 
-   
 
-</div>
-
-  
- <div class="form-group">
-    <%= submit "Update time spent", class: "btn btn-primary" %>
-  </div>
-
-<% end %>
-
-<% end %>
-
-<span><%= link "Back", to: "/taskslist" %></span>

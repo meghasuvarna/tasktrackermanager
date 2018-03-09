@@ -1,0 +1,44 @@
+<h2>Edit Time-Block</h2>
+
+
+
+   <%= form_for @changeset, timestamp_path(@conn, :update, @timeblock), fn f -> %>
+   <div class="form-group">
+      
+        <%= text_input f, :task_id, value: @task.id, hidden: true  %>
+        
+      </div>
+     <div class="form-group">
+    <%= label f, "Start time", class: "control-label" %>
+    <%= select f, :start_year, [options: 2018..2100], value: @timeblock.starttime.year() %> / 
+    <%= select f, :start_month, [options: 1..12], value: @timeblock.starttime.month()  %> / 
+   <%= select f, :start_date, [options: 1..31], value: @timeblock.starttime.day()  %> /
+   
+   <%= select f, :start_hour, [options: 0..23], value: @timeblock.starttime.hour()  %> 
+    <%= select f, :start_minute, [options: 0..59], value: @timeblock.starttime.minute()  %> 
+  
+ 
+</div>
+
+<div class="form-group">
+    <%= label f, "End time", class: "control-label" %>
+    
+    <%= select f, :end_year, [options: 2018..2100], value: @timeblock.endtime.year()  %> / 
+    <%= select f, :end_month, [options: 1..12], value: @timeblock.endtime.month()  %> / 
+   <%= select f, :end_date, [options: 1..31], value: @timeblock.endtime.day()  %> /
+    
+   <%= select f, :end_hour, [options: 0..23],  value: @timeblock.endtime.hour()  %> 
+    <%= select f, :end_minute, [options: 0..59], value: @timeblock.endtime.minute() %> 
+   
+
+</div>
+
+  
+ <div class="form-group">
+    <%= submit "Update time spent", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
+
+
+<span><%= link "Back", to: "/manage" %></span>

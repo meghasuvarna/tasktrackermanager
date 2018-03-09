@@ -32,6 +32,8 @@ defmodule TasktrackerappWeb.Router do
     get "/taskslist", PageController, :taskslist
     get "/manage", PageController, :manage
     get "/manageetasks", PageController, :managetasks
+    get "/edittimeblock", PageController, :edittimeblock
+    get "/addtimeblock", PageController, :addtimeblock
     resources "/users", UserController
     resources "/tasks", TaskController
   

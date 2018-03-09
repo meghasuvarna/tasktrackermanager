@@ -1,0 +1,56 @@
+<script>
+window.timestamp_path = "<%= timestamp_path(@conn, :create) %>"
+window.savetimer = "<%= user_path(@conn, :show, @current_user)%>";
+window.current_user_id = "<%= @current_user.id %>";
+</script>
+
+
+ 
+<div>
+
+
+<%= if @current_user.name == @task.user.name do %>
+
+</div>
+ <%# attribution https://tideee.com/blog/handling-date-inputs-in-elixir-s-phoenix-framework %>
+   <%= form_for @conn, timestamp_path(@conn, :create), fn f -> %>
+   <div class="form-group">
+      
+        <%= text_input f, :task_id, value: @task.id, hidden: true  %>
+        
+      </div>
+     <div class="form-group">
+    <%= label f, "Start time", class: "control-label" %>
+    <%= select f, :start_year, [options: 2018..2100] %> / 
+    <%= select f, :start_month, [options: 1..12] %> / 
+   <%= select f, :start_date, [options: 1..31] %> /
+   
+   <%= select f, :start_hour, [options: 0..23] %> 
+    <%= select f, :start_minute, [options: 0..59] %> 
+  
+ 
+</div>
+
+<div class="form-group">
+    <%= label f, "End time", class: "control-label" %>
+    
+    <%= select f, :end_year, [options: 2018..2100] %> / 
+    <%= select f, :end_month, [options: 1..12] %> / 
+   <%= select f, :end_date, [options: 1..31] %> /
+    
+   <%= select f, :end_hour, [options: 0..23] %> 
+    <%= select f, :end_minute, [options: 0..59] %> 
+   
+
+</div>
+
+  
+ <div class="form-group">
+    <%= submit "Create time block", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
+
+<% end %>
+
+<span><%= link "Back", to: "/manage" %></span>

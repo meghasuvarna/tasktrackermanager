@@ -23,10 +23,10 @@ defmodule Tasktrackerapp.Block do
     |> Repo.preload(:task)
   end
 
-  def list_block_by_id(taskid)
+  def list_blocks_by_id(taskid)
   do
-  q = from t in Timestamp, where: t.task_id == ^taskid, limit: 1, order_by: [desc: t.id]
-  Repo.one(q)
+  q = from t in Timestamp, where: t.task_id == ^taskid
+  Repo.all(q)
   end
 
   @doc """

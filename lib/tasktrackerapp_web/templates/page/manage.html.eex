@@ -35,6 +35,11 @@
         <td>
         <span><%= link "Edit Task", to: task_path(@conn, :edit, task), class: "btn btn-primary btn-xs" %></span>
         </td>
+          <td>
+        <span><%= link "Add Task Time Blocks", to: page_path(@conn, :addtimeblock, %{"task_id"=>task.id}), class: "btn btn-primary btn-xs" %></span>
+
+        </td>
+
         
         </tr>
         </table>
